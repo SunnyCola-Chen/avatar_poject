@@ -1,4 +1,4 @@
-package com.example.myapplication.avatar.model
+package com.example.avatar_api.model
 
 open class AvatarNodePosition(
     val alignAvatar: Boolean = true,
@@ -10,6 +10,8 @@ class EdgePosition(
     alignAvatar: Boolean = true,
     marginEnd: ((avatarSize: Int) -> Int) = { 0 },
     marginBottom: ((avatarSize: Int) -> Int) = { 0 }
-) : AvatarNodePosition(alignAvatar, marginEnd, marginBottom) {
+) : AvatarNodePosition(alignAvatar, marginEnd, marginBottom)
 
-}
+class CenterPosition(alignAvatar: Boolean = true,
+                     marginEnd: ((avatarSize: Int) -> Int) = { 0 },
+                     marginBottom: ((avatarSize: Int) -> Int) = { 0 }): AvatarNodePosition()

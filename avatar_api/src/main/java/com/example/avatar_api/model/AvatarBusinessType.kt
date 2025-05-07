@@ -1,4 +1,4 @@
-package com.example.myapplication.avatar.model
+package com.example.avatar_api.model
 
 enum class AvatarBusinessType(val priority: Int) {
     BUSINESS_RING(1),

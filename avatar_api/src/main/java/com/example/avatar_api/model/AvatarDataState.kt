@@ -1,4 +1,4 @@
-package com.example.myapplication.avatar.model
+package com.example.avatar_api.model
 
 open class AvatarDataState {
 }

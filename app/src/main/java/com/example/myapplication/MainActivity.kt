@@ -5,18 +5,19 @@ import android.widget.Button
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.avatar.AvatarView
-import com.example.myapplication.avatar.AvatarViewModel
-import com.example.myapplication.avatar.model.AvatarNodeType
-import com.example.myapplication.avatar.model.AvatarUIData
+import com.example.avatar_api.model.AvatarBusinessType
+import com.example.avatar_api.service.AvatarBusinessService
+import com.example.myapplication.avatar.businessgradient.GradientRingBusinessConfig
+import src.main.java.com.example.avatar_api.AvatarComponentView
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: AvatarViewModel by viewModels()
-    private lateinit var avatarView: AvatarView
+    var avatarView: AvatarComponentView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+        // 初始化头像组件的注入业务
+        AvatarBusinessService.registerBusiness(AvatarBusinessType.BUSINESS_RING, GradientRingBusinessConfig())
+
         // 创建布局
         val rootLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 创建头像视图
-        avatarView = AvatarView(this).apply {
+        avatarView = AvatarComponentView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 300
@@ -56,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         val badgeButton = Button(this).apply {
             text = "切换徽章"
             setOnClickListener {
-                toggleBadge()
             }
         }
         buttonLayout.addView(badgeButton)
@@ -64,29 +64,10 @@ class MainActivity : AppCompatActivity() {
         rootLayout.addView(buttonLayout)
         setContentView(rootLayout)
 
-        // 设置 ViewModel
-        avatarView.setViewModel(viewModel, this)
     }
 
     private fun toggleRing() {
-        val currentMap = viewModel.avatarLiveData.value ?: return
-        if (currentMap.containsKey(AvatarNodeType.RING)) {
-            viewModel.removeNodeData(AvatarNodeType.RING)
-        } else {
-            // 创建光环数据
-            val ringData = AvatarUIData() // 根据实际需求设置数据
-            viewModel.updateNodeData(AvatarNodeType.RING, ringData)
-        }
+
     }
 
-    private fun toggleBadge() {
-        val currentMap = viewModel.avatarLiveData.value ?: return
-        if (currentMap.containsKey(AvatarNodeType.BADGE)) {
-            viewModel.removeNodeData(AvatarNodeType.BADGE)
-        } else {
-            // 创建徽章数据
-            val badgeData = AvatarUIData() // 根据实际需求设置数据
-            viewModel.updateNodeData(AvatarNodeType.BADGE, badgeData)
-        }
-    }
 }

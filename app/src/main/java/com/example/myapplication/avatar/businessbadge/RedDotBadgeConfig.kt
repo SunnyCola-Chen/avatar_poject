@@ -1,20 +1,25 @@
 package com.example.myapplication.avatar.businessbadge
 
-import com.example.myapplication.avatar.IAvatarBusinessConfig
-import com.example.myapplication.avatar.model.AvatarBusinessType
-import com.example.myapplication.avatar.model.AvatarRedDotBadgeState
-import com.example.myapplication.avatar.model.AvatarRedDotBadgeVariant
+import com.example.avatar_api.interfac.IAvatarDataFactory
+import com.example.avatar_api.interfac.IAvatarUINodeFactory
+import com.example.avatar_api.model.AvatarBusinessType
 
-class RedDotBadgeConfig : IAvatarBusinessConfig<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
-    override fun getAvatarBusinessType(): AvatarBusinessType {
+class RedDotBadgeConfig :
+    com.example.avatar_api.interfac.IAvatarBusinessConfig<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
+    override fun getBusinessType(): AvatarBusinessType {
         return AvatarBusinessType.BUSINESS_BADGE
     }
 
-    override fun getAvatarUINodeFactory(variantType: AvatarRedDotBadgeVariant): IAvatarUINodeFactory<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
-        return RedDotBadgeUIFactory()
+    override fun getVariant(): AvatarRedDotBadgeVariant {
+        TODO("Not yet implemented")
     }
 
-    override fun getAvatarDataFactory(variantType: AvatarRedDotBadgeVariant): IAvatarDataFactory<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
-        return RedDotBadgeDataFactory()
+    override fun getUIFactory(variant: AvatarRedDotBadgeVariant): IAvatarUINodeFactory<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
+        TODO("Not yet implemented")
     }
+
+    override fun getDataFactory(variant: AvatarRedDotBadgeVariant): IAvatarDataFactory<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
+        TODO("Not yet implemented")
+    }
+
 } 

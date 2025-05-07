@@ -1,10 +1,9 @@
-package com.example.myapplication.avatar.ui
+package com.example.avatar_api.ui
 
 import android.content.Context
 import android.graphics.Color
 import android.net.Uri
 import android.util.AttributeSet
-import com.facebook.drawee.generic.GenericDraweeHierarchy
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
 
