@@ -13,6 +13,7 @@ class AvatarComponentDelegate(val container: AvatarComponentView, val config: Av
     private val avatarViewModel: AvatarViewModel by lazy { AvatarViewModel() }
 
     fun buildAvatar() {
+
         // 增加头像图片
         avatarImageView = CircleImageView(container.context).apply {
             id = R.id.avatar

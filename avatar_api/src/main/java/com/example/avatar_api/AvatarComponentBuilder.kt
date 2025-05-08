@@ -6,7 +6,7 @@ import com.example.avatar_api.model.AvatarBusinessData
 
 class AvatarComponentBuilder {
     private var avatarConfig: AvatarConfig? = null
-    private val businesses = mutableListOf<BusinessData>()
+    private val businesses = mutableListOf<AvatarBusinessData>()
     private var trackerConfig: TrackerConfig? = null
 
     fun defaultAvatarConfig(block: AvatarConfigBuilder.() -> Unit) {
@@ -14,7 +14,7 @@ class AvatarComponentBuilder {
         avatarConfig = builder.build()
     }
 
-    fun registerBusiness(vararg business: BusinessData) {
+    fun registerBusiness(vararg business: AvatarBusinessData) {
         businesses.addAll(business)
     }
 
@@ -26,7 +26,7 @@ class AvatarComponentBuilder {
     fun build(): AvatarComponentConfig {
         return AvatarComponentConfig(
             avatarConfig ?: throw IllegalStateException("AvatarConfig must be set"),
-            businesses,
+            businesses.toList(),
             trackerConfig
         )
     }

@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.activity.viewModels
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 初始化头像组件的注入业务
-        AvatarBusinessService.registerBusiness(AvatarBusinessType.BUSINESS_RING, GradientRingBusinessConfig())
+        initAvatarComponent()
 
         // 创建布局
         val rootLayout = LinearLayout(this).apply {
@@ -48,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         val ringButton = Button(this).apply {
             text = "切换光环"
             setOnClickListener {
-                toggleRing()
             }
         }
         buttonLayout.addView(ringButton)
@@ -64,10 +64,22 @@ class MainActivity : AppCompatActivity() {
         rootLayout.addView(buttonLayout)
         setContentView(rootLayout)
 
+        // init avatar view
+        val avatarComponentView: AvatarComponentView = AvatarComponentView(context = this)
+        val lp = avatarComponentView.layoutParams.apply {
+            width =  96
+            height = 96
+        }
+        avatarComponentView.layoutParams = lp
+        rootLayout.addView(avatarComponentView)
+
+        // input data
+        avatarComponentView.onBind("")
     }
 
-    private fun toggleRing() {
 
+    private fun initAvatarComponent() {
+        AvatarBusinessService.registerBusiness(AvatarBusinessType.BUSINESS_RING, GradientRingBusinessConfig())
     }
 
 }

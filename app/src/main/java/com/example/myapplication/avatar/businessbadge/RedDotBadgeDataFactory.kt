@@ -1,11 +1,10 @@
 package com.example.myapplication.avatar.businessbadge
 
-import com.example.myapplication.avatar.IAvatarDataFactory
-import com.example.myapplication.avatar.model.AvatarRedDotBadgeState
-import com.example.myapplication.avatar.model.AvatarRedDotBadgeVariant
+import com.example.avatar_api.interfac.IAvatarDataFactory
 
-class RedDotBadgeDataFactory : IAvatarDataFactory<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
-    override fun getAvatarState(variantType: AvatarRedDotBadgeVariant): AvatarRedDotBadgeState {
+class RedDotBadgeDataFactory(val variant: AvatarRedDotBadgeVariant) :
+    IAvatarDataFactory<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
+    override fun getAvatarState(data: Any?): AvatarRedDotBadgeState {
         return AvatarRedDotBadgeState()
     }
 } 

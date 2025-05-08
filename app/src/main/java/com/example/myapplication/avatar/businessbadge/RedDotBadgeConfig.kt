@@ -10,16 +10,12 @@ class RedDotBadgeConfig :
         return AvatarBusinessType.BUSINESS_BADGE
     }
 
-    override fun getVariant(): AvatarRedDotBadgeVariant {
-        TODO("Not yet implemented")
-    }
-
     override fun getUIFactory(variant: AvatarRedDotBadgeVariant): IAvatarUINodeFactory<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
-        TODO("Not yet implemented")
+        return RedDotBadgeUIFactory(variant)
     }
 
     override fun getDataFactory(variant: AvatarRedDotBadgeVariant): IAvatarDataFactory<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
-        TODO("Not yet implemented")
+        return RedDotBadgeDataFactory(variant)
     }
 
 } 

@@ -1,18 +1,14 @@
 package com.example.myapplication.avatar.businessbadge
 
-import androidx.compose.ui.graphics.Color
-import com.example.myapplication.avatar.IAvatarUINodeFactory
-import com.example.myapplication.avatar.model.AvatarBadgeUIData
-import com.example.myapplication.avatar.model.AvatarNodePosition
-import com.example.myapplication.avatar.model.AvatarRedDotBadgeState
-import com.example.myapplication.avatar.model.AvatarRedDotBadgeVariant
-import com.example.myapplication.avatar.model.AvatarRingUIData
+import android.graphics.Color
+import com.example.avatar_api.interfac.IAvatarUINodeFactory
+import com.example.avatar_api.model.AvatarBadgeUIData
+import com.example.avatar_api.model.AvatarNodePosition
+import com.example.avatar_api.model.AvatarRingUIData
 
-class RedDotBadgeUIFactory : IAvatarUINodeFactory<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
-    override fun getBadgeConfig(
-        variantType: AvatarRedDotBadgeVariant,
-        state: AvatarRedDotBadgeState
-    ): AvatarBadgeUIData? {
+class RedDotBadgeUIFactory(val variant: AvatarRedDotBadgeVariant) :
+    IAvatarUINodeFactory<AvatarRedDotBadgeVariant, AvatarRedDotBadgeState> {
+    override fun getBadgeConfig(state: AvatarRedDotBadgeState): AvatarBadgeUIData? {
         if (!state.isVisible) return null
         
         return AvatarBadgeUIData(
@@ -22,14 +18,11 @@ class RedDotBadgeUIFactory : IAvatarUINodeFactory<AvatarRedDotBadgeVariant, Avat
                 marginBottom = { 0 }
             ),
             size = { 12 },
-            color = Color.Red
+            color = Color.RED
         )
     }
 
-    override fun getRingConfig(
-        variantType: AvatarRedDotBadgeVariant,
-        state: AvatarRedDotBadgeState
-    ): AvatarRingUIData? {
+    override fun getRingConfig(state: AvatarRedDotBadgeState): AvatarRingUIData? {
         return null
     }
 } 

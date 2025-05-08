@@ -10,7 +10,7 @@ open class AvatarUIData(open val position: AvatarNodePosition,
 class AvatarRingUIData(
     var outline: ((avatarSize: Int) -> Int),
     var strokeWidth: ((avatarSize: Int) -> Int),
-    var color: Color
+    var color: Int
 ) : AvatarUIData(size = { avatarSize ->
     avatarSize + outline.invoke(avatarSize) * 2 + strokeWidth.invoke(
         avatarSize
@@ -22,5 +22,5 @@ class AvatarBadgeUIData(
     val view: View? = null,
     override var position: AvatarNodePosition,
     override var size: ((avatarSize: Int) -> Int),
-    var color: Color
+    var color: Int
 ): AvatarUIData(size = { avatarSize -> size.invoke(avatarSize)}, position = EdgePosition())

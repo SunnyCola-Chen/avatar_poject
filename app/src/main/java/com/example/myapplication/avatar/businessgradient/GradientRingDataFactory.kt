@@ -1,11 +1,10 @@
 package com.example.myapplication.avatar.businessgradient
 
-import com.example.myapplication.avatar.IAvatarDataFactory
-import com.example.myapplication.avatar.model.AvatarGradientRingState
-import com.example.myapplication.avatar.model.AvatarGradientRingVariant
+import com.example.avatar_api.interfac.IAvatarDataFactory
 
-class GradientRingDataFactory : IAvatarDataFactory<AvatarGradientRingVariant, AvatarGradientRingState> {
-    override fun getAvatarState(variantType: AvatarGradientRingVariant): AvatarGradientRingState {
+class GradientRingDataFactory(val variant: AvatarGradientRingVariant) :
+    IAvatarDataFactory<AvatarGradientRingVariant, AvatarGradientRingState> {
+    override fun getAvatarState(data: Any?): AvatarGradientRingState {
         return AvatarGradientRingState()
     }
 } 

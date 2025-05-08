@@ -1,20 +1,20 @@
 package com.example.myapplication.avatar.businessgradient
 
 import com.example.avatar_api.interfac.IAvatarBusinessConfig
-import com.example.myapplication.avatar.model.AvatarGradientRingState
-import com.example.myapplication.avatar.model.AvatarGradientRingVariant
+import com.example.avatar_api.interfac.IAvatarDataFactory
+import com.example.avatar_api.interfac.IAvatarUINodeFactory
+import com.example.avatar_api.model.AvatarBusinessType
 
-class GradientRingBusinessConfig :
-    com.example.avatar_api.interfac.IAvatarBusinessConfig<AvatarGradientRingVariant, AvatarGradientRingState> {
-    override fun getAvatarBusinessType(): com.example.avatar_api.model.AvatarBusinessType {
-        return com.example.avatar_api.model.AvatarBusinessType.BUSINESS_RING
+class GradientRingBusinessConfig : IAvatarBusinessConfig<AvatarGradientRingVariant, AvatarGradientRingState> {
+    override fun getBusinessType(): AvatarBusinessType {
+        return AvatarBusinessType.BUSINESS_RING
     }
 
-    override fun getAvatarUINodeFactory(variantType: AvatarGradientRingVariant): IAvatarUINodeFactory<AvatarGradientRingVariant, AvatarGradientRingState> {
-        return GradientRingUIFactory()
+    override fun getUIFactory(variant: AvatarGradientRingVariant): IAvatarUINodeFactory<AvatarGradientRingVariant, AvatarGradientRingState> {
+        return GradientRingUIFactory(variant)
     }
 
-    override fun getAvatarDataFactory(variantType: AvatarGradientRingVariant): IAvatarDataFactory<AvatarGradientRingVariant, AvatarGradientRingState> {
-        return GradientRingDataFactory()
+    override fun getDataFactory(variant: AvatarGradientRingVariant): IAvatarDataFactory<AvatarGradientRingVariant, AvatarGradientRingState> {
+        return GradientRingDataFactory(variant)
     }
 } 
