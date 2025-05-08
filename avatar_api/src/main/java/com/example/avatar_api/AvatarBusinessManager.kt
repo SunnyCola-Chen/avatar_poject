@@ -7,14 +7,17 @@ import com.example.avatar_api.model.AvatarNodeType
 import com.example.avatar_api.model.AvatarVariant
 import com.example.avatar_api.service.IAvatarBusinessService
 
-object AvatarBusinessManager: IAvatarBusinessService {
-    val businessMap: MutableMap<AvatarBusinessType, out IAvatarBusinessConfig<AvatarVariant, AvatarDataState>> = mutableMapOf()
+object AvatarBusinessManager : IAvatarBusinessService {
+    val businessMap = mutableMapOf<AvatarBusinessType, IAvatarBusinessConfig<out AvatarVariant, out AvatarDataState>>()
 
     override fun registerBusiness(
         type: AvatarBusinessType,
         factory: IAvatarBusinessConfig<out AvatarVariant, out AvatarDataState>
     ) {
+        businessMap[type] = factory
+    }
 
-        TODO("Not yet implemented")
+    fun getBusinessConfig(type: AvatarBusinessType): IAvatarBusinessConfig<out AvatarVariant, out AvatarDataState>? {
+        return businessMap[type]
     }
 }

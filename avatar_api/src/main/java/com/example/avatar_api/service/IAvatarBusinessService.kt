@@ -11,10 +11,5 @@ interface IAvatarBusinessService {
     fun registerBusiness(type: AvatarBusinessType, factory: IAvatarBusinessConfig<out AvatarVariant, out AvatarDataState>)
 }
 
-object AvatarBusinessService: IAvatarBusinessService by ServiceLoader.load(IAvatarBusinessService::class.java)?.first() ?: object : IAvatarBusinessService {
-    override fun registerBusiness(
-        type: AvatarBusinessType,
-        factory: IAvatarBusinessConfig<out AvatarVariant, out AvatarDataState>
-    ) {
-    }
-}
+object AvatarBusinessService : IAvatarBusinessService by (ServiceLoader.load(IAvatarBusinessService::class.java).firstOrNull() 
+    ?: AvatarBusinessServiceImpl())
