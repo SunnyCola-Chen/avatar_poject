@@ -12,6 +12,8 @@ import com.example.avatar_api.model.AvatarBusinessType
 import com.example.avatar_api.service.AvatarBusinessService
 import com.example.myapplication.avatar.businessgradient.GradientRingBusinessConfig
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.imagepipeline.core.ImagePipelineConfig
+import com.facebook.imagepipeline.listener.RequestLoggingListener
 import src.main.java.com.example.avatar_api.AvatarComponentView
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +21,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Fresco.initialize(this)
+        val imagePipelineConfig = ImagePipelineConfig.newBuilder(this)
+            .setDownsampleEnabled(true)
+            .setRequestListeners( // 监听网络请求
+                setOf(
+                    RequestLoggingListener() // 关键：添加日志监听器
+                )
+            )
+            .build()
+        Fresco.initialize(this, imagePipelineConfig)
         // 初始化头像组件的注入业务
         initAvatarComponent()
 

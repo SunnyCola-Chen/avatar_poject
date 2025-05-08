@@ -41,6 +41,11 @@ class AvatarComponentDelegate(val container: AvatarComponentView, val config: Av
 
     fun onBind(data: Any) {
         avatarImageView.setImageURI("https://picsum.photos/300/200".toUri())
+//        avatarImageView.controller = Fresco.newDraweeControllerBuilder()
+//            .setUri(url.toUri())
+//            .setAutoPlayAnimations(true)
+//            .build()
+
         avatarController.updateState(data = data)
     }
 
