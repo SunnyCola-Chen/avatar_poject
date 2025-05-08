@@ -1,10 +1,12 @@
 package com.example.avatar_api
 
+import android.net.Uri
 import android.widget.RelativeLayout
 import android.widget.RelativeLayout.LayoutParams
 import com.example.avatar_api.model.AvatarViewModel
 import com.example.avatar_api.ui.CircleImageView
 import src.main.java.com.example.avatar_api.AvatarComponentView
+import androidx.core.net.toUri
 
 class AvatarComponentDelegate(val container: AvatarComponentView, val config: AvatarComponentConfig)  {
     private lateinit var avatarNodeExecutor: AvatarNodeExecutor
@@ -13,7 +15,6 @@ class AvatarComponentDelegate(val container: AvatarComponentView, val config: Av
     private val avatarViewModel: AvatarViewModel by lazy { AvatarViewModel() }
 
     fun buildAvatar() {
-
         // 增加头像图片
         avatarImageView = CircleImageView(container.context).apply {
             id = R.id.avatar
@@ -39,7 +40,7 @@ class AvatarComponentDelegate(val container: AvatarComponentView, val config: Av
     }
 
     fun onBind(data: Any) {
-        avatarImageView.setImageUrl("")
+        avatarImageView.setImageURI("https://picsum.photos/300/200".toUri())
         avatarController.updateState(data = data)
     }
 

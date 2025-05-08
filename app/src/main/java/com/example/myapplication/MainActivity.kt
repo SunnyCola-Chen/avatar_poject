@@ -6,9 +6,12 @@ import android.widget.Button
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
+import com.example.avatar_api.dpToPx
 import com.example.avatar_api.model.AvatarBusinessType
 import com.example.avatar_api.service.AvatarBusinessService
 import com.example.myapplication.avatar.businessgradient.GradientRingBusinessConfig
+import com.facebook.drawee.backends.pipeline.Fresco
 import src.main.java.com.example.avatar_api.AvatarComponentView
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Fresco.initialize(this)
         // 初始化头像组件的注入业务
         initAvatarComponent()
 
@@ -66,13 +70,18 @@ class MainActivity : AppCompatActivity() {
 
         // init avatar view
         val avatarComponentView: AvatarComponentView = AvatarComponentView(context = this)
-        val lp = avatarComponentView.layoutParams.apply {
-            width =  96
-            height = 96
-        }
+        val lp = LinearLayout.LayoutParams(200, 200)
         avatarComponentView.layoutParams = lp
         rootLayout.addView(avatarComponentView)
 
+        avatarComponentView.buildAvatar {
+            defaultAvatarConfig {
+                var containerAvatarSize: Int = 96.dpToPx()
+                var avatarSize: Int = 90.dpToPx()
+                var defaultClickListener: (() -> Unit)? = null
+                var lifecycleOwner: LifecycleOwner? = null
+            }
+        }
         // input data
         avatarComponentView.onBind("")
     }
