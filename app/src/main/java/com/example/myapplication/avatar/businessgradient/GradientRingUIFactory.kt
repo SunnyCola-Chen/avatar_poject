@@ -4,7 +4,7 @@ import com.example.avatar_api.interfac.IAvatarUINodeFactory
 import com.example.avatar_api.model.AvatarBadgeUIData
 import com.example.avatar_api.model.AvatarRingUIData
 
-class GradientRingUIFactory(val variant: AvatarGradientRingVariant) :
+class GradientRingUIFactory(val variant: AvatarGradientRingVariant?) :
     IAvatarUINodeFactory<AvatarGradientRingVariant, AvatarGradientRingState> {
 
     override fun getRingConfig(state: AvatarGradientRingState): AvatarRingUIData? {

@@ -8,7 +8,7 @@ import java.util.ServiceLoader
 
 interface IAvatarBusinessService {
 
-    fun registerBusiness(type: AvatarBusinessType, factory: IAvatarBusinessConfig<out AvatarVariant, out AvatarDataState>)
+    fun registerBusiness(type: AvatarBusinessType, factory: IAvatarBusinessConfig<AvatarVariant, AvatarDataState>)
 }
 
 object AvatarBusinessService : IAvatarBusinessService by (ServiceLoader.load(IAvatarBusinessService::class.java).firstOrNull() 

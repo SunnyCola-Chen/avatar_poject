@@ -1,5 +1,6 @@
 package com.example.avatar_api.core
 
+import android.util.Log
 import android.widget.RelativeLayout
 import android.widget.RelativeLayout.LayoutParams
 import com.example.avatar_api.model.AvatarViewModel
@@ -9,6 +10,9 @@ import androidx.core.net.toUri
 import com.example.avatar_api.R
 
 class AvatarComponentDelegate(val container: AvatarComponentView, val config: AvatarComponentConfig)  {
+    companion object {
+        const val TAG = "AvatarComponentDelegate-"
+    }
     private lateinit var avatarNodeExecutor: AvatarNodeExecutor
     private lateinit var avatarImageView: CircleImageView
     private lateinit var avatarController: AvatarController
@@ -26,12 +30,13 @@ class AvatarComponentDelegate(val container: AvatarComponentView, val config: Av
         container.addView(avatarImageView)
 
         // 初始化node渲染器
-        avatarNodeExecutor = AvatarNodeExecutor(container, avatarImageView)
+        avatarNodeExecutor = AvatarNodeExecutor(container, avatarImageView, config.avatarConfig.avatarSize)
         avatarController = AvatarController(config.businesses).apply {
             avatarViewModel = this@AvatarComponentDelegate.avatarViewModel
         }
 
         // 观察头像数据变化
+        Log.d(TAG, "buildAvatar: ${config.avatarConfig.lifecycleOwner}")
         config.avatarConfig.lifecycleOwner?.let {
             avatarViewModel.observe(it) {
                 avatarNodeExecutor.updateAvatarNode(it)

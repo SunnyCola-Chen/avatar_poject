@@ -14,6 +14,8 @@ import com.example.avatar_api.model.AvatarBusinessData
 import com.example.avatar_api.model.AvatarBusinessType
 import com.example.avatar_api.model.AvatarVariant
 import com.example.avatar_api.service.AvatarBusinessService
+import com.example.myapplication.avatar.businessbadge.AvatarRedDotBadgeVariant
+import com.example.myapplication.avatar.businessbadge.RedDotBadgeConfig
 import com.example.myapplication.avatar.businessgradient.GradientRingBusinessConfig
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.core.ImagePipelineConfig
@@ -46,15 +48,6 @@ class MainActivity : AppCompatActivity() {
             setPadding(16, 16, 16, 16)
         }
 
-        // 创建头像视图
-        avatarView = AvatarComponentView(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                300
-            )
-        }
-        rootLayout.addView(avatarView)
-
         // 创建控制按钮
         val buttonLayout = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -81,23 +74,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
         buttonLayout.addView(badgeButton)
-
         rootLayout.addView(buttonLayout)
         setContentView(rootLayout)
 
         // init avatar view
         val avatarComponentView: AvatarComponentView = AvatarComponentView(context = this)
-        val lp = LinearLayout.LayoutParams(200, 200)
+        val lp = LinearLayout.LayoutParams(900, 900)
         avatarComponentView.layoutParams = lp
         rootLayout.addView(avatarComponentView)
 
         kotlin.runCatching {
             avatarComponentView.buildAvatar {
                 defaultAvatarConfig {
-                    var containerAvatarSize: Int = 96.dpToPx()
-                    var avatarSize: Int = 90.dpToPx()
-                    var defaultClickListener: (() -> Unit)? = null
-                    var lifecycleOwner: LifecycleOwner? = null
+                    containerAvatarSize = 100.dpToPx()
+                    avatarSize = 90.dpToPx()
+                    defaultClickListener = null
+                    lifecycleOwner = this@MainActivity
                 }
 
                 registerBusiness(
@@ -107,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                     ),
                     AvatarBusinessData(
                         businessType = AvatarBusinessType.BUSINESS_BADGE,
-                        variant = AvatarVariant()
+                        variant = AvatarRedDotBadgeVariant(ctx = this@MainActivity)
                     )
                 )
             }
@@ -128,6 +120,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initAvatarComponent() {
         AvatarBusinessService.registerBusiness(AvatarBusinessType.BUSINESS_RING, GradientRingBusinessConfig())
+        AvatarBusinessService.registerBusiness(AvatarBusinessType.BUSINESS_BADGE, RedDotBadgeConfig())
     }
 
 }

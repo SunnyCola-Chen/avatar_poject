@@ -4,8 +4,8 @@ import com.example.avatar_api.model.AvatarBusinessType
 import com.example.avatar_api.model.AvatarDataState
 import com.example.avatar_api.model.AvatarVariant
 
-interface IAvatarBusinessConfig<V : AvatarVariant, S : AvatarDataState> {
+interface IAvatarBusinessConfig<out V : AvatarVariant, out S : AvatarDataState> {
     fun getBusinessType(): AvatarBusinessType
-    fun getDataFactory(variant: V): IAvatarDataFactory<V, S>
-    fun getUIFactory(variant: V): IAvatarUINodeFactory<V, S>
+    fun getDataFactory(variant: AvatarVariant): IAvatarDataFactory<out V, out S>
+    fun getUIFactory(variant: AvatarVariant): IAvatarUINodeFactory<out V, out S>
 }

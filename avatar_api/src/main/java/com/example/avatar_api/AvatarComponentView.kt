@@ -26,6 +26,7 @@ class AvatarComponentView @JvmOverloads constructor(
             val builder = AvatarComponentBuilder().apply(block)
             config = builder.build() ?: return
             val cfg = config ?: return
+            Log.d(TAG, "buildAvatar: ${cfg}")
             avatarDelegate = AvatarComponentDelegate(
                 this@AvatarComponentView,
                 cfg

@@ -9,7 +9,7 @@ import com.example.avatar_api.model.AvatarVariant
 class AvatarBusinessServiceImpl: IAvatarBusinessService {
     override fun registerBusiness(
         type: AvatarBusinessType,
-        factory: IAvatarBusinessConfig<out AvatarVariant, out AvatarDataState>
+        factory: IAvatarBusinessConfig<AvatarVariant, AvatarDataState>
     ) {
         AvatarBusinessManager.registerBusiness(type, factory)
     }
