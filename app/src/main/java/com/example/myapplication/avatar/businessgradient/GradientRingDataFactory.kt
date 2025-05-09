@@ -1,5 +1,6 @@
 package com.example.myapplication.avatar.businessgradient
 
+import com.example.avatar_api.core.BusinessData
 import com.example.avatar_api.interfac.IAvatarDataFactory
 
 class GradientRingDataFactory(val variant: AvatarGradientRingVariant) :

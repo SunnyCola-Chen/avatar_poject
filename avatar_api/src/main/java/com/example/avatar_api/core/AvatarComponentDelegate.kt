@@ -1,12 +1,12 @@
-package com.example.avatar_api
+package com.example.avatar_api.core
 
-import android.net.Uri
 import android.widget.RelativeLayout
 import android.widget.RelativeLayout.LayoutParams
 import com.example.avatar_api.model.AvatarViewModel
 import com.example.avatar_api.ui.CircleImageView
 import src.main.java.com.example.avatar_api.AvatarComponentView
 import androidx.core.net.toUri
+import com.example.avatar_api.R
 
 class AvatarComponentDelegate(val container: AvatarComponentView, val config: AvatarComponentConfig)  {
     private lateinit var avatarNodeExecutor: AvatarNodeExecutor

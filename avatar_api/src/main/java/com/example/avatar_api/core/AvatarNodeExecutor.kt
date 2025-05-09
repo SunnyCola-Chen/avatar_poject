@@ -1,14 +1,9 @@
-package com.example.avatar_api
+package com.example.avatar_api.core
 
-import android.content.Context
-import android.graphics.Canvas
-import android.graphics.LinearGradient
-import android.graphics.Paint
-import android.graphics.Shader
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import androidx.core.content.contentValuesOf
+import com.example.avatar_api.R
 import com.example.avatar_api.model.AvatarBadgeUIData
 import com.example.avatar_api.model.AvatarNodeType
 import com.example.avatar_api.model.AvatarRingUIData

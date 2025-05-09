@@ -1,14 +1,18 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import android.view.ViewGroup
+import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
-import com.example.avatar_api.dpToPx
+import com.example.avatar_api.User
+import com.example.avatar_api.core.BusinessData
+import com.example.avatar_api.core.BusinessDataSwitch
+import com.example.avatar_api.core.dpToPx
+import com.example.avatar_api.model.AvatarBusinessData
 import com.example.avatar_api.model.AvatarBusinessType
+import com.example.avatar_api.model.AvatarVariant
 import com.example.avatar_api.service.AvatarBusinessService
 import com.example.myapplication.avatar.businessgradient.GradientRingBusinessConfig
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -17,6 +21,9 @@ import com.facebook.imagepipeline.listener.RequestLoggingListener
 import src.main.java.com.example.avatar_api.AvatarComponentView
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        val TAG = "MainActivity-"
+    }
     var avatarView: AvatarComponentView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,16 +91,38 @@ class MainActivity : AppCompatActivity() {
         avatarComponentView.layoutParams = lp
         rootLayout.addView(avatarComponentView)
 
-        avatarComponentView.buildAvatar {
-            defaultAvatarConfig {
-                var containerAvatarSize: Int = 96.dpToPx()
-                var avatarSize: Int = 90.dpToPx()
-                var defaultClickListener: (() -> Unit)? = null
-                var lifecycleOwner: LifecycleOwner? = null
+        kotlin.runCatching {
+            avatarComponentView.buildAvatar {
+                defaultAvatarConfig {
+                    var containerAvatarSize: Int = 96.dpToPx()
+                    var avatarSize: Int = 90.dpToPx()
+                    var defaultClickListener: (() -> Unit)? = null
+                    var lifecycleOwner: LifecycleOwner? = null
+                }
+
+                registerBusiness(
+                    AvatarBusinessData(
+                        businessType = AvatarBusinessType.BUSINESS_RING,
+                        variant = AvatarVariant()
+                    ),
+                    AvatarBusinessData(
+                        businessType = AvatarBusinessType.BUSINESS_BADGE,
+                        variant = AvatarVariant()
+                    )
+                )
             }
+        }.onFailure { e ->
+            Log.e(TAG, "onCreate: ${e.message}")
         }
+
         // input data
-        avatarComponentView.onBind("")
+        avatarComponentView.onBind(
+            User(
+                uid = "1",
+                business1 = BusinessData.Business1Data(BusinessDataSwitch.ON),
+                business2 = BusinessData.Business2Data(BusinessDataSwitch.ON)
+            )
+        )
     }
 
 

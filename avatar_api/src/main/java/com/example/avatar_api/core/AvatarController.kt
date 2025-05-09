@@ -1,4 +1,4 @@
-package com.example.avatar_api
+package com.example.avatar_api.core
 
 import com.example.avatar_api.interfac.IAvatarBusinessConfig
 import com.example.avatar_api.model.AvatarBusinessData

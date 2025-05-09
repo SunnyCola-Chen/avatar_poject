@@ -1,4 +1,4 @@
-package com.example.avatar_api
+package com.example.avatar_api.core
 
 import android.content.res.Resources.getSystem
 import androidx.lifecycle.LifecycleOwner
@@ -72,12 +72,14 @@ data class TrackerConfig(
 )
 
 sealed class BusinessData {
-    data class Business1Data(val variant: Business1Variant) : BusinessData()
-    data class Business2Data(val variant: Business2Variant) : BusinessData()
+    data class Business1Data(val type: BusinessDataSwitch) : BusinessData()
+    data class Business2Data(val type: BusinessDataSwitch) : BusinessData()
 }
 
-data class Business1Variant(val param: String = "")
-data class Business2Variant(val flag: Boolean = false)
+enum class BusinessDataSwitch {
+    ON,
+    OFF
+}
 
 // 扩展函数：dp转px
 fun Int.dpToPx(): Int = (this * getSystem().displayMetrics.density).toInt()
