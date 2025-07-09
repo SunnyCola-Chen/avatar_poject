@@ -1,11 +1,22 @@
 package com.example.myapplication
 
+import android.app.ActionBar.LayoutParams
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.LinearLayout.HORIZONTAL
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.avatar_api.User
 import com.example.avatar_api.core.BusinessData
 import com.example.avatar_api.core.BusinessDataSwitch
@@ -17,10 +28,21 @@ import com.example.avatar_api.service.AvatarBusinessService
 import com.example.myapplication.avatar.businessbadge.AvatarRedDotBadgeVariant
 import com.example.myapplication.avatar.businessbadge.RedDotBadgeConfig
 import com.example.myapplication.avatar.businessgradient.GradientRingBusinessConfig
+import com.example.myapplication.mytest.MyButton
+import com.example.myapplication.mytest.MyLayout
+import com.example.myapplication.scrollrecycleview.CardAdapter
+import com.example.myapplication.scrollrecycleview.CardItem
+import com.example.myapplication.scrollrecycleview.CenterSmoothScroller
+import com.example.myapplication.scrollrecycleview.CenterZoomLayoutManager
+import com.example.myapplication.scrolltest.InterceptTouchFrameLayout
+import com.example.myapplication.scrolltest.MyPagerAdapter
+import com.example.myapplication.viewdraw.SquareView
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.imagepipeline.listener.RequestLoggingListener
+import com.google.android.material.snackbar.Snackbar
 import src.main.java.com.example.avatar_api.AvatarComponentView
+import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -30,6 +52,165 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewerList()
+//        testViewDraw()
+//        testScroll()
+//        textEventDispatcher()
+//        avatarRelativeBus()
+    }
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var positionIndicator: TextView
+    private lateinit var adapter: CardAdapter
+
+
+    fun viewerList() {
+        setContentView(R.layout.activity_main)
+
+        recyclerView = findViewById(R.id.card_recycler)
+        positionIndicator = findViewById(R.id.position_indicator)
+
+        // 创建示例数据
+        val items = listOf(
+            CardItem("Mountain View", "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"),
+            CardItem("Ocean Sunset", "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1746&q=80"),
+            CardItem("Forest Path", "https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"),
+            CardItem("Desert Dunes", "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"),
+            CardItem("Northern Lights", "https://images.unsplash.com/photo-1483347756197-71ef80e95f73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"),
+            CardItem("City Skyline", "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1744&q=80"),
+            CardItem("Mountain View", "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"),
+            CardItem("Ocean Sunset", "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1746&q=80"),
+            CardItem("Forest Path", "https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"),
+            CardItem("Desert Dunes", "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"),
+            CardItem("Northern Lights", "https://images.unsplash.com/photo-1483347756197-71ef80e95f73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80")
+            )
+
+        // 设置布局管理器
+        val layoutManager = CenterZoomLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+        val scroller = CenterSmoothScroller(recyclerView.context, recyclerView)
+
+        // 设置适配器
+        adapter = CardAdapter(items) { position, item ->
+            Snackbar.make(recyclerView, "点击了: ${item.title}", Snackbar.LENGTH_SHORT).show()
+        }
+        recyclerView.adapter = adapter
+        var isSnapping = false
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) return
+                val centerView =
+                    (recyclerView.layoutManager as? CenterZoomLayoutManager)?.findCenterView() // 找到最居中的 item
+                centerView?.let {
+                    val position = recyclerView.getChildAdapterPosition(it)
+                    isSnapping = true
+                    scroller.targetPosition = position
+                    Log.d(
+                        TAG,
+                        "onScrollStateChanged: ${newState} ${centerView.hashCode()} ${position}"
+                    )
+                    layoutManager.startSmoothScroll(scroller)
+                    updatePositionIndicator(position)
+                }
+                recyclerView.postDelayed({isSnapping = true}, 300)
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                Log.d(TAG, "onScrolled: ${dx}")
+            }
+        })
+
+                // 初始位置指示器
+        updatePositionIndicator(0)
+    }
+
+    private fun updatePositionIndicator(position: Int) {
+        positionIndicator.text = "${position + 1}/${adapter.itemCount}"
+    }
+
+    fun testViewDraw() {
+        val squareView = SquareView(this)
+        setContentView(squareView, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+    }
+
+    fun testScroll() {
+        val frameLayout = InterceptTouchFrameLayout(this)
+        val viewPager = ViewPager2(this).apply {
+            layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            orientation = ViewPager2.ORIENTATION_HORIZONTAL
+            adapter = MyPagerAdapter(this@MainActivity)
+        }
+        frameLayout.addView(viewPager)
+        setContentView(frameLayout)
+        frameLayout.setOnTouchListener { v, event ->
+            Log.d(TAG, "testScroll: ${event}")
+            (viewPager.getChildAt(0) as? RecyclerView)?.dispatchTouchEvent(event) == true
+        }
+    }
+
+
+    private fun textEventDispatcher() {
+        val myLayout = MyLayout(this).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+
+        val myButton = MyButton(this).apply {
+            text = "Click Me 1"
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                300
+            )
+            setOnClickListener {
+                Log.d("MyButton1", "Button1 clicked!")
+            }
+        }
+
+        val myButton2 = MyButton(this).apply {
+            text = "Click Me 2"
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                300
+            )
+            setOnClickListener {
+                Log.d("MyButton2", "Button2 clicked!")
+            }
+        }
+
+        myLayout.addView(myButton)
+        myLayout.addView(myButton2)
+        setContentView(myLayout)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        Log.d(TAG, "onTouchEvent: ${event}")
+        return super.onTouchEvent(event)
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        Log.d(TAG, "\n \n dispatchTouchEvent: ${ev}")
+        return super.dispatchTouchEvent(ev)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private fun avatarRelativeBus() {
         val imagePipelineConfig = ImagePipelineConfig.newBuilder(this)
             .setDownsampleEnabled(true)
             .setRequestListeners( // 监听网络请求
@@ -116,7 +297,6 @@ class MainActivity : AppCompatActivity() {
             )
         )
     }
-
 
     private fun initAvatarComponent() {
         AvatarBusinessService.registerBusiness(AvatarBusinessType.BUSINESS_RING, GradientRingBusinessConfig())

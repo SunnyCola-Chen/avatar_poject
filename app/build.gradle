@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'me.ele.lancet'
 }
 
 android {
@@ -70,9 +69,4 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    // 依赖androidx, 已升级AndroidX的项目集成下面的依赖
-    implementation "com.bytedance.tools.codelocator:codelocator-core:2.0.4"
-    // 未升级AndroidX的项目集成下面的依赖 support版本不再维护 请升级androidx
-    implementation "com.bytedance.tools.codelocator:codelocator-core-support:2.0.0"
-    compileOnly 'me.ele:lancet-base:1.0.6'
 } 
