@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.animation.ValueAnimator
 import android.app.ActionBar.LayoutParams
 import android.os.Bundle
 import android.util.Log
@@ -7,10 +8,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.LinearLayout.HORIZONTAL
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,9 +30,11 @@ import com.example.avatar_api.model.AvatarBusinessData
 import com.example.avatar_api.model.AvatarBusinessType
 import com.example.avatar_api.model.AvatarVariant
 import com.example.avatar_api.service.AvatarBusinessService
+import com.example.myapplication.asyc.AsycLearnFragment
 import com.example.myapplication.avatar.businessbadge.AvatarRedDotBadgeVariant
 import com.example.myapplication.avatar.businessbadge.RedDotBadgeConfig
 import com.example.myapplication.avatar.businessgradient.GradientRingBusinessConfig
+import com.example.myapplication.dashhoardview.DashboardView
 import com.example.myapplication.mytest.MyButton
 import com.example.myapplication.mytest.MyLayout
 import com.example.myapplication.scrollrecycleview.CardAdapter
@@ -52,8 +59,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_top)
 
-        viewerList()
+
+        val fm = supportFragmentManager
+        val fragment = fm.findFragmentById(R.id.fragment_container)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, AsycLearnFragment.newInstance())
+            .commit()
+
+//        showDashboardView()
+//        viewerList()
 //        testViewDraw()
 //        testScroll()
 //        textEventDispatcher()
@@ -63,6 +79,35 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var positionIndicator: TextView
     private lateinit var adapter: CardAdapter
+
+    fun showDashboardView() {
+        setContentView(R.layout.activity_dashboardview)
+        val dashboardView = findViewById<DashboardView>(R.id.dashboard)
+        val inputValue = findViewById<EditText>(R.id.inputValue)
+        val submitButton = findViewById<Button>(R.id.submitButton)
+
+        submitButton.setOnClickListener {
+            val input = inputValue.text.toString()
+            val targetValue = input.toIntOrNull()
+
+            if (targetValue == null || targetValue !in 0..dashboardView.maxValue) {
+                Toast.makeText(this, "请输入 0 ~ ${dashboardView.maxValue} 范围的数字", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            animateToValue(dashboardView, targetValue)
+        }
+    }
+    fun animateToValue(dashboard: DashboardView, target: Int) {
+        val animator = ValueAnimator.ofInt(dashboard.currentValue, target).apply {
+            duration = 1000
+            interpolator = AccelerateDecelerateInterpolator()
+            addUpdateListener {
+                dashboard.currentValue = it.animatedValue as Int
+            }
+        }
+        animator.start()
+    }
 
 
     fun viewerList() {
