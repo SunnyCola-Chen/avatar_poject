@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.animation.ValueAnimator
 import android.app.ActionBar.LayoutParams
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -35,6 +36,8 @@ import com.example.myapplication.avatar.businessbadge.AvatarRedDotBadgeVariant
 import com.example.myapplication.avatar.businessbadge.RedDotBadgeConfig
 import com.example.myapplication.avatar.businessgradient.GradientRingBusinessConfig
 import com.example.myapplication.dashhoardview.DashboardView
+import com.example.myapplication.login.LoginActivity
+import com.example.myapplication.login.model.LoginResponse
 import com.example.myapplication.mytest.MyButton
 import com.example.myapplication.mytest.MyLayout
 import com.example.myapplication.scrollrecycleview.CardAdapter
@@ -59,14 +62,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_top)
-
-
-        val fm = supportFragmentManager
-        val fragment = fm.findFragmentById(R.id.fragment_container)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, AsycLearnFragment.newInstance())
-            .commit()
+        goLogin()
+//        setContentView(R.layout.activity_top)
+//        val fm = supportFragmentManager
+//        val fragment = fm.findFragmentById(R.id.fragment_container)
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.fragment_container, AsycLearnFragment.newInstance())
+//            .commit()
 
 //        showDashboardView()
 //        viewerList()
@@ -74,6 +76,23 @@ class MainActivity : AppCompatActivity() {
 //        testScroll()
 //        textEventDispatcher()
 //        avatarRelativeBus()
+    }
+
+    fun goLogin() {
+        val myButton = Button(this).apply {
+            text = "Login"
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                300
+            )
+            setOnClickListener {
+                Log.d(TAG, "Login button clicked!")
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        setContentView(myButton)
     }
 
     private lateinit var recyclerView: RecyclerView
